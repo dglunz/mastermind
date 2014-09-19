@@ -1,10 +1,10 @@
--welcome player
--present start menu options
+x welcome player
+x present start menu options
 -display instructions
 -display difficulty choices
--allow player to quit
--allow player to start game
--randomly generate starting color sequence
+x allow player to quit
+x allow player to start game
+x randomly generate starting color sequence
 -allow player to input guess
 -check input guess against starting color
 -return how many correct positions/colors each round

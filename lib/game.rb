@@ -1,17 +1,25 @@
-require_relative 'display'
-require_relative 'compare'
-require_relative 'color_sequence'
+require_relative 'display'         # => true
+require_relative 'compare'         # => true
+require_relative 'color_sequence'  # => true
+require_relative 'board'
 
 class Game
-  attr_reader :count, :input
+  attr_reader :count, :input, :history  # => nil
   def initialize
     @count = 0
+    @history = []
   end
 
   def play
     Display.start
-    final_sequence = ColorSequence.new("rgby") #randomly pick
+    final_sequence = ColorSequence.new
+    board = Board.new
+    board.show
     game_loop(final_sequence)
+  end
+
+  def collect_input
+
   end
 
   def instructions
@@ -23,7 +31,8 @@ class Game
     Display.enter_guess
     input = gets.chomp
     result = Compare.guess(input, final_sequence.colors)
-    Display.round_result(input, 2, 3, count)  
+    @history << input
+    Display.round_result(input, 2, 3, count)
   end
 
   def game_loop(final_sequence)
