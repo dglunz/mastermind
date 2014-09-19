@@ -1,0 +1,13 @@
+-welcome player
+-present start menu options
+-display instructions
+-display difficulty choices
+-allow player to quit
+-allow player to start game
+-randomly generate starting color sequence
+-allow player to input guess
+-check input guess against starting color
+-return how many correct positions/colors each round
+-play until number of turns is reached or player wins
+-display win message/game results
+-ask player if they'd like to play again
