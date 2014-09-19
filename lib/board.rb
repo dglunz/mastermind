@@ -4,9 +4,8 @@ class Board
   attr_reader :table
   def initialize(size=4, final)
     rows = []
-    rows << ['One', 1]
-    rows << ['Two', 2]
-    rows << ['Three', 3]
+    rows << ['', "????"]
+    11.downto(1) { |x| rows << [x-1, "    "] }
     table = Terminal::Table.new :rows => rows
     @table = table
   end

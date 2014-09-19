@@ -2,7 +2,7 @@ module Compare
   def self.guess(guess_sequence, final_sequence)
     elements = correct_elements(guess_sequence, final_sequence)    # => 2
     positions = correct_positions(guess_sequence, final_sequence)  # => 0
-    results = {elements: elements, positions: positions}           # => {:elements=>2, :positions=>0}
+    results = {elements: elements, positions: positions, guess: guess_sequence}           # => {:elements=>2, :positions=>0}
   end
   def self.correct_positions(guess_sequence, final_sequence)
     0                                                              # => 0

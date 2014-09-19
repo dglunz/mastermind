@@ -7,6 +7,8 @@ module Display
     when 'g' then Rainbow(color).green
     when 'b' then Rainbow(color).blue
     when 'y' then Rainbow(color).yellow
+    when 'w' then Rainbow(color).white
+    when 'b' then Rainbow(color).black
     else color
     end
   end
@@ -30,8 +32,8 @@ module Display
     puts "I have generated a beginner sequence with four elements made up of: (#{colorful('r')})ed, (#{colorful('g')})reen, (#{colorful('b')})lue, and (#{colorful('y')})ellow. Use (q)uit at any time to end the game."
   end
 
-  def self.round_result(guess, elements, positions, count)
-    puts "'#{guess}' has #{elements} of the correct elements with #{positions} in the correct positions.\nYou've taken #{count}"
+  def self.round_result(results, turn_count)
+    puts "'#{results[:guess]}' has #{results[:elements]} of the correct elements with #{results[:positions]} in the correct positions.\nYou've taken #{:turn_count}"
   end
 
   def self.quit

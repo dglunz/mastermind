@@ -13,7 +13,7 @@ class Game
   def play
     Display.start
     final_sequence = ColorSequence.new
-    board = Board.new
+    board = Board.new(final_sequence)
     board.show
     game_loop(final_sequence)
   end
@@ -26,20 +26,20 @@ class Game
     puts "How to play - TODO"
   end
 
-  def play_round
+  def play_round(final_sequence)
     @count += 1
     Display.enter_guess
     input = gets.chomp
     result = Compare.guess(input, final_sequence.colors)
     @history << input
-    Display.round_result(input, 2, 3, count)
+    Display.round_result(result, count)
   end
 
   def game_loop(final_sequence)
     input = ''
     result = false
     while (count <= 4) && (input != 'q') && (result != true)
-      play_round
+      play_round(final_sequence)
     end
     play_again?
   end
@@ -61,12 +61,11 @@ class Game
       Display.enter
       input = gets.chomp
       case input
-      when 'p' || 'play' then play
-      when 'i' || 'instructions' then instructions
-      when 'q' || 'quit' then Display.quit
-      else puts "#{input} is not valid."
+        when 'p' || 'play' then play
+        when 'i' || 'instructions' then instructions
+        when 'q' || 'quit' then Display.quit
+        else puts "#{input} is not valid."
       end
-
     end
   end
 
