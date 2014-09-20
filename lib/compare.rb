@@ -6,7 +6,6 @@ module Compare
   end
   def self.correct_positions(guess_sequence, final_sequence)
     correct = 0
-    puts guess_sequence.split("")
     guess_sequence.length.times do |letter|
       correct += 1 if guess_sequence[letter] == final_sequence[letter]
     end

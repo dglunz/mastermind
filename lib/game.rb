@@ -7,10 +7,10 @@ class Game
   attr_reader :count, :input, :history, :board
   def initialize
     @count = 0
-    @history = []
   end
 
   def play
+    @history = []
     Display.start
     final_sequence = ColorSequence.new
     @board = Board.new
@@ -36,26 +36,31 @@ class Game
     Display.round_result(result, count, guess)
   end
 
+  def valid_input?(input)
+    input.length == 4 # && input only includes rgby
+  end
+
   def game_loop(final_sequence)
     input = ''
     result = false
     while (count < 10) && (input != 'q')
       Display.enter_guess
       input = gets.chomp
-      play_round(final_sequence, input)
+      valid_input?(input) ? play_round(final_sequence, input) : Display.invalid_input(input)
     end
-    play_again?
+    finished
   end
 
   def finished
     Display.results
-    Display.enter
-    play_again? ? play : return
+    play_again? ? play : exit
   end
 
   def play_again?
-    puts "Play Again?"
-    false
+    puts "Play Again? (Y)es or (N)o"
+    Display.enter
+    input = gets.chomp.downcase
+    input == 'y' || input == 'yes' ? true : false
   end
 
   def start_menu
@@ -67,7 +72,7 @@ class Game
         when 'p' || 'play' then play
         when 'i' || 'instructions' then instructions
         when 'q' || 'quit' then Display.quit
-        else puts "#{input} is not valid."
+        else Display.input_invalid(input)
       end
     end
   end
