@@ -6,11 +6,11 @@ require_relative 'board'
 class Game
   attr_reader :count, :input, :history, :board
   def initialize
-    @count = 0
   end
 
   def play
     @history = []
+    @count = 0
     Display.start
     final_sequence = ColorSequence.new
     @board = Board.new

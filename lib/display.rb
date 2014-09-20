@@ -15,6 +15,7 @@ module Display
     end.join("")                              # => "rgby"
   end
   def self.introduction
+    # clear terminal with whitespace
     printf "Welcome\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?\n"
   end
 
