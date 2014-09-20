@@ -1,10 +1,10 @@
-require_relative 'display'         # => true
-require_relative 'compare'         # => true
-require_relative 'color_sequence'  # => true
+require_relative 'display'
+require_relative 'compare'
+require_relative 'color_sequence'
 require_relative 'board'
 
 class Game
-  attr_reader :count, :input, :history  # => nil
+  attr_reader :count, :input, :history, :board
   def initialize
     @count = 0
     @history = []
@@ -13,7 +13,7 @@ class Game
   def play
     Display.start
     final_sequence = ColorSequence.new
-    board = Board.new(final_sequence)
+    @board = Board.new
     board.show
     game_loop(final_sequence)
   end
@@ -26,20 +26,23 @@ class Game
     puts "How to play - TODO"
   end
 
-  def play_round(final_sequence)
+  def play_round(final_sequence, guess)
     @count += 1
-    Display.enter_guess
-    input = gets.chomp
-    result = Compare.guess(input, final_sequence.colors)
-    @history << input
-    Display.round_result(result, count)
+    result = Compare.guess(guess, final_sequence.colors)
+    guess = Display.colorful(guess)
+    @history << guess
+    board.edit_row(count, @history)
+    board.show
+    Display.round_result(result, count, guess)
   end
 
   def game_loop(final_sequence)
     input = ''
     result = false
-    while (count <= 4) && (input != 'q') && (result != true)
-      play_round(final_sequence)
+    while (count < 10) && (input != 'q')
+      Display.enter_guess
+      input = gets.chomp
+      play_round(final_sequence, input)
     end
     play_again?
   end
