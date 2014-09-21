@@ -1,65 +1,71 @@
 require_relative 'display'
-require_relative 'compare'
 require_relative 'color_sequence'
 require_relative 'board'
 
 class Game
-  attr_reader :count, :history, :board, :win, :final
+  attr_reader :round, :history, :board
 
-  def run
-    Display.introduction
-    start_menu
+  def initialize
+    @history = []
+    @round = 0
+    @final_sequence = ColorSequence.new
+    @pretty_final_sequence = Display.colorful(@final_sequence.colors)
+    @board = Board.new
+    @guess = ''
+    @finished = false
   end
 
-  def start_menu
-    input = ''
-    while input != 'q'
-      Display.enter
-      input = gets.chomp
-      case input
-        when 'p' || 'play' then play
-        when 'i' || 'instructions' then instructions
-        when 'q' || 'quit' then Display.quit
-        else Display.input_invalid(input)
+  def start
+    board.show
+    game_loop
+  end
+
+  def game_loop
+    while (round < 10) && (@guess != 'q')
+      get_input
+      if valid_input?(@guess)
+        round_result = play_round(@guess)
+        if round_result[:positions] == 4
+          break
+        else
+          show_round_result(round_result)
+        end
+      else
+        invalid_input(@guess)
       end
     end
+    finished
   end
 
-  def play
-    @win = false
-    @history = []
-    @count = 0
-    Display.start
-    final_sequence = ColorSequence.new
-    @final = Display.colorful(final_sequence.colors)
-    @board = Board.new
-    board.show
-    game_loop(final_sequence)
+  def show_round_result(round_result)
+    Display.round_result(round_result, round)
   end
 
-  def game_loop(final_sequence)
-    input = ''
-    while (count < 10) && (input != 'q') && (win != true)
-      Display.enter_guess
-      input = gets.chomp
-      valid_input?(input) ? play_round(final_sequence, input) : invalid_input(input)
-    end
-    win ? finished : lose
+  def get_input
+    Display.enter_guess
+    @guess = gets.chomp.downcase
   end
 
-  def play_round(final_sequence, guess)
-    @count += 1
-    result = Compare.guess(guess, final_sequence.colors)
-    guess = Display.colorful(guess)
-    @history << guess
+  def play_round(guess)
+    @round += 1
+    result = @final_sequence.guess(guess)
+    @history << Display.colorful(guess)
+    update_board
+    result
+  end
+
+  def update_board
     Display.mastermind
-    board.edit_row(count, @history)
+    @finished ? finish_board : edit_board
     board.show
-    result[:positions] == 4 ? winner : Display.round_result(result, count, guess)
   end
 
-  def collect_input
+  def finish_board
+    board.finished(round, history, @pretty_final_sequence)
+  end
 
+  def edit_board
+    board.edit_row(round, @history)
   end
 
   def instructions
@@ -75,26 +81,9 @@ class Game
   end
 
   def finished
-    Display.mastermind
-    board.finished(count, history, final)
-    board.show
-    win ? Display.winner : Display.lose
-    play_again? ? play : exit
-  end
-
-  def winner
-    @win = true
-  end
-
-  def lose
-    finished
-  end
-
-  def play_again?
-    puts "Play Again? (Y)es or (N)o"
-    Display.enter
-    input = gets.chomp.downcase
-    input == 'y' || input == 'yes' ? true : false
+    @finished = true
+    update_board
+    # win ? Display.winner : Display.lose
   end
 
 end
