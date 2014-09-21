@@ -15,8 +15,6 @@ module Display
     end.join("")                              # => "rgby"
   end
   def self.introduction
-    # clear terminal with whitespace
-    clear_screen
     mastermind
     printf "Welcome!\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?\n"
   end
@@ -27,6 +25,7 @@ module Display
   end
 
   def self.mastermind
+    clear_screen
     puts "
 
 
@@ -36,8 +35,6 @@ module Display
 ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██║  ██║
 ██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██████╔╝
 ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝
-
-
 
 
 
@@ -67,7 +64,8 @@ module Display
   end
 
   def self.start
-    puts "\n\nWELCOME TO MASTERMIND\n\nI have generated a beginner sequence with four elements made up of: (#{colorful('r')})ed, (#{colorful('g')})reen, (#{colorful('b')})lue, and (#{colorful('y')})ellow. Use (q)uit at any time to end the game."
+    mastermind
+    puts "I have generated a beginner sequence with four elements made up of: (#{colorful('r')})ed, (#{colorful('g')})reen, (#{colorful('b')})lue, and (#{colorful('y')})ellow. Use (q)uit at any time to end the game."
   end
 
   def self.round_result(results, turn_count, guess)

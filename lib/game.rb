@@ -35,28 +35,6 @@ class Game
     end
   end
 
-  def collect_input
-
-  end
-
-  def instructions
-    Display.instructions
-  end
-
-  def play_round(final_sequence, guess)
-    @count += 1
-    result = Compare.guess(guess, final_sequence.colors)
-    guess = Display.colorful(guess)
-    @history << guess
-    board.edit_row(count, @history)
-    board.show
-    Display.round_result(result, count, guess)
-  end
-
-  def valid_input?(input)
-    (input.length == 4) && (input.scan(/[^rgby]/).length == 0) # && input only includes rgby
-  end
-
   def game_loop(final_sequence)
     input = ''
     result = false
@@ -66,6 +44,29 @@ class Game
       valid_input?(input) ? play_round(final_sequence, input) : Display.invalid_input(input)
     end
     finished
+  end
+
+  def play_round(final_sequence, guess)
+    @count += 1
+    result = Compare.guess(guess, final_sequence.colors)
+    guess = Display.colorful(guess)
+    @history << guess
+    Display.mastermind
+    board.edit_row(count, @history)
+    board.show
+    Display.round_result(result, count, guess)
+  end
+
+  def collect_input
+
+  end
+
+  def instructions
+    Display.instructions
+  end
+
+  def valid_input?(input)
+    (input.length == 4) && (input.scan(/[^rgby]/).length == 0) # && input only includes rgby
   end
 
   def finished
