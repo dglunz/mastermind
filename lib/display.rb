@@ -20,8 +20,15 @@ module Display
   end
 
   def self.instructions
-    puts "\nA secret combination of colors has been chosen at random.\nGuess that combination in 10 tries or less.\nThe only penalty for losing is self loathing.\nAnd knowing you've let your friends and family down.\nGood luck!\n\n"
-
+    mastermind
+    puts "
+    \n
+    A secret combination of colors has been chosen at random.\n
+    Your job is to guess the correct sequence in 10 tries or less.\n
+    If you manage to win, you'll be regarded as a mastermind.\n
+    The only penalty for losing is self loathing.\n
+    And knowing you've let your friends and family down.\n
+    Good luck!\n\n\n\nEnter (p)lay to get started. \n\n"
   end
 
   def self.mastermind
@@ -59,8 +66,12 @@ module Display
     printf 'Enter Guess: '
   end
 
-  def self.results
-    puts 'Player Won/Lost'
+  def self.lose
+    puts 'Sorry, you lose...'
+  end
+
+  def self.winner
+    puts 'Congrats, you win!'
   end
 
   def self.start
@@ -77,5 +88,3 @@ module Display
   end
 
 end
-
-Display.colorful("rgby")  # => "rgby"

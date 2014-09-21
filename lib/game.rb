@@ -4,21 +4,11 @@ require_relative 'color_sequence'
 require_relative 'board'
 
 class Game
-  attr_reader :count, :history, :board
+  attr_reader :count, :history, :board, :win, :final
 
   def run
     Display.introduction
     start_menu
-  end
-
-  def play
-    @history = []
-    @count = 0
-    Display.start
-    final_sequence = ColorSequence.new
-    @board = Board.new
-    board.show
-    game_loop(final_sequence)
   end
 
   def start_menu
@@ -35,15 +25,26 @@ class Game
     end
   end
 
+  def play
+    @win = false
+    @history = []
+    @count = 0
+    Display.start
+    final_sequence = ColorSequence.new
+    @final = Display.colorful(final_sequence.colors)
+    @board = Board.new
+    board.show
+    game_loop(final_sequence)
+  end
+
   def game_loop(final_sequence)
     input = ''
-    result = false
-    while (count < 10) && (input != 'q')
+    while (count < 10) && (input != 'q') && (win != true)
       Display.enter_guess
       input = gets.chomp
-      valid_input?(input) ? play_round(final_sequence, input) : Display.invalid_input(input)
+      valid_input?(input) ? play_round(final_sequence, input) : invalid_input(input)
     end
-    finished
+    win ? finished : lose
   end
 
   def play_round(final_sequence, guess)
@@ -54,7 +55,7 @@ class Game
     Display.mastermind
     board.edit_row(count, @history)
     board.show
-    Display.round_result(result, count, guess)
+    result[:positions] == 4 ? winner : Display.round_result(result, count, guess)
   end
 
   def collect_input
@@ -69,9 +70,24 @@ class Game
     (input.length == 4) && (input.scan(/[^rgby]/).length == 0) # && input only includes rgby
   end
 
+  def invalid_input(input)
+    input == 'q' || input == 'quit' ? return : Display.invalid_input(input)
+  end
+
   def finished
-    Display.results
+    Display.mastermind
+    board.finished(count, history, final)
+    board.show
+    win ? Display.winner : Display.lose
     play_again? ? play : exit
+  end
+
+  def winner
+    @win = true
+  end
+
+  def lose
+    finished
   end
 
   def play_again?

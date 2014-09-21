@@ -18,7 +18,18 @@ class Board
     header = ['Turn', "Guess", ""]
     rows << ['Final', "????", " "]
     10.downto(history.length+1) { |x| rows << [x, "    ", " "] }
-    history.each_with_index { |round, index| rows << [history.length - index, round, " "] }
+    history.reverse.each_with_index { |round, index| rows << [history.length - index, round, " "] }
+    table = Terminal::Table.new :title => title, :headings => header, :rows => rows
+    @table = table
+  end
+
+  def finished(round, history, final)
+    rows = []
+    title = "Game Over"
+    header = ['Turn', "Guess", ""]
+    rows << ['Final', final , " "]
+    10.downto(history.length+1) { |x| rows << [x, "    ", " "] }
+    history.reverse.each_with_index { |round, index| rows << [history.length - index, round, " "] }
     table = Terminal::Table.new :title => title, :headings => header, :rows => rows
     @table = table
   end
