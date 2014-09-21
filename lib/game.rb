@@ -4,8 +4,11 @@ require_relative 'color_sequence'
 require_relative 'board'
 
 class Game
-  attr_reader :count, :input, :history, :board
-  def initialize
+  attr_reader :count, :history, :board
+
+  def run
+    Display.introduction
+    start_menu
   end
 
   def play
@@ -18,12 +21,26 @@ class Game
     game_loop(final_sequence)
   end
 
+  def start_menu
+    input = ''
+    while input != 'q'
+      Display.enter
+      input = gets.chomp
+      case input
+        when 'p' || 'play' then play
+        when 'i' || 'instructions' then instructions
+        when 'q' || 'quit' then Display.quit
+        else Display.input_invalid(input)
+      end
+    end
+  end
+
   def collect_input
 
   end
 
   def instructions
-    puts "How to play - TODO"
+    Display.instructions
   end
 
   def play_round(final_sequence, guess)
@@ -37,7 +54,7 @@ class Game
   end
 
   def valid_input?(input)
-    input.length == 4 # && input only includes rgby
+    (input.length == 4) && (input.scan(/[^rgby]/).length == 0) # && input only includes rgby
   end
 
   def game_loop(final_sequence)
@@ -61,25 +78,6 @@ class Game
     Display.enter
     input = gets.chomp.downcase
     input == 'y' || input == 'yes' ? true : false
-  end
-
-  def start_menu
-    input = ''
-    while input != 'q'
-      Display.enter
-      input = gets.chomp
-      case input
-        when 'p' || 'play' then play
-        when 'i' || 'instructions' then instructions
-        when 'q' || 'quit' then Display.quit
-        else Display.input_invalid(input)
-      end
-    end
-  end
-
-  def run
-    Display.introduction
-    start_menu
   end
 
 end

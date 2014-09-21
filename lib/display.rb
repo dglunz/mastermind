@@ -16,8 +16,39 @@ module Display
   end
   def self.introduction
     # clear terminal with whitespace
-    printf "Welcome\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?\n"
+    clear_screen
+    mastermind
+    printf "Welcome!\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?\n"
   end
+
+  def self.instructions
+    puts "\nA secret combination of colors has been chosen at random.\nGuess that combination in 10 tries or less.\nThe only penalty for losing is self loathing.\nAnd knowing you've let your friends and family down.\nGood luck!\n\n"
+
+  end
+
+  def self.mastermind
+    puts "
+
+
+███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗██████╗
+████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗
+██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║██║  ██║
+██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██║  ██║
+██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██████╔╝
+╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝
+
+
+
+
+
+
+"
+
+  end
+
+   def self.clear_screen
+     print "\e[2J\e[f"
+   end
 
   def self.invalid_input(input)
     puts "#{input} is not a valid input. Please try again."
