@@ -1,18 +1,21 @@
 require_relative 'display'
 require_relative 'color_sequence'
 require_relative 'board'
+require 'pry'
 
 class Game
-  attr_reader :round, :history, :board
+  attr_reader :round,
+              :history,
+              :board
 
   def initialize
-    @history = []
-    @round = 0
-    @final_sequence = ColorSequence.new
+    @history               = []
+    @round                 = 0
+    @final_sequence        = ColorSequence.new
     @pretty_final_sequence = Display.colorful(@final_sequence.colors)
-    @board = Board.new
-    @guess = ''
-    @finished = false
+    @board                 = Board.new
+    @guess                 = ''
+    @finished              = false
   end
 
   def start
@@ -21,20 +24,27 @@ class Game
   end
 
   def game_loop
-    while (round < 10) && (@guess != 'q')
+    until round > 10 || quit? || win?
       get_input
-      if valid_input?(@guess)
-        round_result = play_round(@guess)
-        if round_result[:positions] == 4
-          break
-        else
-          show_round_result(round_result)
-        end
-      else
-        invalid_input(@guess)
-      end
+      valid_input? ? play_round : invalid_input(@guess)
+      show_round_result(@history[-1])
     end
-    finished
+    game_over
+  end
+
+  def play_round
+    @round += 1
+    @history << @final_sequence.guess(@guess)
+    update_board
+    @history[-1]
+  end
+
+  def win?
+    @history[-1][:positions] == 4 if round > 0
+  end
+
+  def quit?
+    @guess == 'q' || @guess == 'quit'
   end
 
   def show_round_result(round_result)
@@ -46,13 +56,6 @@ class Game
     @guess = gets.chomp.downcase
   end
 
-  def play_round(guess)
-    @round += 1
-    result = @final_sequence.guess(guess)
-    @history << Display.colorful(guess)
-    update_board
-    result
-  end
 
   def update_board
     Display.mastermind
@@ -65,22 +68,22 @@ class Game
   end
 
   def edit_board
-    board.edit_row(round, @history)
+    board.edit_row(round, history)
   end
 
   def instructions
     Display.instructions
   end
 
-  def valid_input?(input)
-    (input.length == 4) && (input.scan(/[^rgby]/).length == 0) # && input only includes rgby
+  def valid_input?
+    (@guess.length == 4) && (@guess.scan(/[^rgby]/).length == 0)
   end
 
   def invalid_input(input)
     input == 'q' || input == 'quit' ? return : Display.invalid_input(input)
   end
 
-  def finished
+  def game_over
     @finished = true
     update_board
     # win ? Display.winner : Display.lose

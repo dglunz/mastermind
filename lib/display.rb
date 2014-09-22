@@ -26,8 +26,8 @@ module Display
     A secret combination of colors has been chosen at random.\n
     Your job is to guess the correct sequence in 10 tries or less.\n
     If you manage to win, you'll be regarded as a mastermind.\n
-    The only penalty for losing is self loathing.\n
-    And knowing you've let your friends and family down.\n
+    If you lose, absolutely nothing will happen.\n
+    Other than letting down your friends and family.\n
     Good luck!\n\n\n\nEnter (p)lay to get started. \n\n"
   end
 
@@ -77,7 +77,7 @@ module Display
   end
 
   def self.round_result(results, turn_count)
-    puts "'#{results[:guess]}' has #{results[:elements]} of the correct elements with #{results[:positions]} in the correct positions.\nYou've taken #{turn_count} guesses"
+    puts "'#{results[:guess]}' has #{results[:elements]} of the correct Elements with #{results[:positions]} in the correct Positions.\nYou've taken #{turn_count} guesses"
   end
 
   def self.quit

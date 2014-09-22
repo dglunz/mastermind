@@ -15,7 +15,7 @@ class ColorSequence
   def guess(guess_sequence)
     elements = correct_elements(guess_sequence)
     positions = correct_positions(guess_sequence)
-    results = {elements: elements, positions: positions, guess: guess_sequence}
+    results = {elements: elements, positions: positions, guess: Display.colorful(guess_sequence)}
   end
 
   private
