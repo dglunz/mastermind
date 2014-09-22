@@ -63,7 +63,7 @@ module Display
     printf 'Enter Guess: '
   end
 
-  def self.lose
+  def self.loser
     puts 'Sorry, you lose...'
   end
 

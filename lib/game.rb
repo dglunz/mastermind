@@ -1,7 +1,6 @@
 require_relative 'display'
 require_relative 'color_sequence'
 require_relative 'board'
-require 'pry'
 
 class Game
   attr_reader :round,
@@ -86,7 +85,7 @@ class Game
   def game_over
     @finished = true
     update_board
-    # win ? Display.winner : Display.lose
+    win? ? Display.winner : Display.loser
   end
 
   def finished?
