@@ -86,4 +86,8 @@ class Game
     # win ? Display.winner : Display.lose
   end
 
+  def finished?
+    @finished
+  end
+
 end
