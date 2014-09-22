@@ -23,10 +23,10 @@ class Game
   end
 
   def game_loop
-    until round > 10 || quit? || win?
+    until finished?
       get_input
       valid_input? ? play_round : invalid_input(@guess)
-      show_round_result(@history[-1])
+      show_round_result(@history.last)
     end
     game_over
   end
@@ -35,15 +35,19 @@ class Game
     @round += 1
     @history << @final_sequence.guess(@guess)
     update_board
-    @history[-1]
+    @history.last
   end
 
   def win?
-    @history[-1][:positions] == 4 if round > 0
+    @history.last[:positions] == 4 if round > 0
   end
 
   def quit?
     @guess == 'q' || @guess == 'quit'
+  end
+
+  def finished?
+    round >= 10 || quit? || win?
   end
 
   def show_round_result(round_result)
@@ -86,10 +90,6 @@ class Game
     @finished = true
     update_board
     win? ? Display.winner : Display.loser
-  end
-
-  def finished?
-    @finished
   end
 
 end

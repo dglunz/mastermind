@@ -3,11 +3,11 @@ require 'terminal-table'
 class Board
   attr_accessor :table
   def initialize(size=4)
-    @rows = []
-    @title = "Mastermind"
+    @rows   = []
+    @title  = "Mastermind"
     @header = ['Turn', "Guess", "E", "P"]
-    @rows << ['Final', "????", " ", " "]
-    10.downto(1) { |x| @rows << [x, "    ", " ", " "] }
+    @rows   << ['Final', "????", " ", " "]
+    fill_empty_rows
     create_new_table
   end
 
@@ -33,8 +33,14 @@ class Board
     end
   end
 
+  def fill_empty_rows(last_row=1)
+    10.downto(last_row) { |x| @rows << [x, "    ", " ", " "] }
+  end
+
   def create_new_table
-    table = Terminal::Table.new :title => @title, :headings => @header, :rows => @rows
+    table = Terminal::Table.new :title => @title,
+                                :headings => @header,
+                                :rows => @rows
     @table = table
   end
 

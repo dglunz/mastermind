@@ -3,15 +3,7 @@ require 'rainbow'
 module Display
   def self.colorful(sequence)
     sequence.split("").map do |letter|
-      case letter
-        when 'r' then Rainbow(letter).red
-        when 'g' then Rainbow(letter).green
-        when 'b' then Rainbow(letter).blue
-        when 'y' then Rainbow(letter).yellow
-        when 'w' then Rainbow(letter).white
-        when 'b' then Rainbow(letter).black
-        else letter
-      end
+      color_it(letter)
     end.join("")
   end
   def self.introduction
@@ -82,6 +74,20 @@ module Display
 
   def self.quit
     puts "Quitting..."
+  end
+
+  private
+
+  def self.color_it(letter)
+    case letter
+      when 'r' then Rainbow(letter).red
+      when 'g' then Rainbow(letter).green
+      when 'b' then Rainbow(letter).blue
+      when 'y' then Rainbow(letter).yellow
+      when 'w' then Rainbow(letter).white
+      when 'b' then Rainbow(letter).black
+      else letter
+    end
   end
 
 end

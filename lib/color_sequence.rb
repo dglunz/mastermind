@@ -15,10 +15,18 @@ class ColorSequence
   def guess(guess_sequence)
     elements = correct_elements(guess_sequence)
     positions = correct_positions(guess_sequence)
-    results = {elements: elements, positions: positions, guess: Display.colorful(guess_sequence)}
+    results(elements, positions, guess_sequence)
   end
 
   private
+
+  def results(elements, positions, guess)
+    {
+      elements: elements,
+      positions: positions,
+      guess: Display.colorful(guess)
+    }
+  end
 
   def correct_positions(guess_sequence)
     guess_sequence.split("").select.with_index do |letter, index|
