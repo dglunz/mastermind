@@ -26,7 +26,6 @@ class Game
     until finished?
       get_input
       valid_input? ? play_round : invalid_input(@guess)
-      show_round_result(@history.last)
     end
     game_over
   end
@@ -35,7 +34,7 @@ class Game
     @round += 1
     @history << @final_sequence.guess(@guess)
     update_board
-    @history.last
+    show_round_result(@history.last)
   end
 
   def win?
