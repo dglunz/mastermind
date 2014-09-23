@@ -1,3 +1,5 @@
-Dir["./lib/*.rb"].each { |file| require file }
+file_pattern = File.expand_path "../lib/*.rb" , __FILE__
+
+Dir[file_pattern].each { |file| require file }
 
 CLI.new.start_menu
