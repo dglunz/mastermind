@@ -5,13 +5,15 @@ require_relative 'board'
 class Game
   attr_reader :round,
               :history,
-              :board
+              :board,
+              :display
 
   def initialize
     @history               = []
     @round                 = 0
+    @display               = Display
     @final_sequence        = ColorSequence.new
-    @pretty_final_sequence = Display.colorful(@final_sequence.colors)
+    @pretty_final_sequence = display.colorful(@final_sequence.colors)
     @board                 = Board.new
     @guess                 = ''
     @finished              = false
@@ -46,21 +48,22 @@ class Game
   end
 
   def finished?
-    round >= 10 || quit? || win?
+    round_limit = 10
+    round >= round_limit || quit? || win?
   end
 
   def show_round_result(round_result)
-    Display.round_result(round_result, round)
+    display.round_result(round_result, round)
   end
 
   def get_input
-    Display.enter_guess
+    display.enter_guess
     @guess = gets.chomp.downcase
   end
 
 
   def update_board
-    Display.mastermind
+    display.mastermind
     @finished ? finish_board : edit_board
     board.show
   end
@@ -74,7 +77,7 @@ class Game
   end
 
   def instructions
-    Display.instructions
+    display.instructions
   end
 
   def valid_input?
@@ -82,13 +85,13 @@ class Game
   end
 
   def invalid_input(input)
-    input == 'q' || input == 'quit' ? return : Display.invalid_input(input)
+    input == 'q' || input == 'quit' ? return : display.invalid_input(input)
   end
 
   def game_over
     @finished = true
     update_board
-    win? ? Display.winner : Display.loser
+    win? ? display.winner : display.loser
   end
 
 end
