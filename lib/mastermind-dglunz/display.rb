@@ -76,6 +76,10 @@ module Display
     puts "Quitting..."
   end
 
+  def self.play_again
+    puts "Play Again? (Y)es or (N)o"
+  end
+
   private
 
   def self.color_it(letter)

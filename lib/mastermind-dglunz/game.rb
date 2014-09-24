@@ -8,10 +8,10 @@ class Game
               :board,
               :display
 
-  def initialize
+  def initialize(display)
     @history               = []
     @round                 = 0
-    @display               = Display
+    @display               = display
     @final_sequence        = ColorSequence.new
     @pretty_final_sequence = display.colorful(@final_sequence.colors)
     @board                 = Board.new

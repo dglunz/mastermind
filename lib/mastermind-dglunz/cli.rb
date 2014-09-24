@@ -1,9 +1,15 @@
 require_relative 'game'
 class CLI
-  attr_reader :input
+  attr_reader :input,
+              :display
+
+  def initialize
+    @display = Display
+
+  end
 
   def start_menu
-    Display.introduction
+    display.introduction
     @input = get_input
     start_menu_options
     play_again? ? start_menu : return
@@ -14,19 +20,18 @@ class CLI
     when play? then play
     when instructions? then instructions
     when quit? then quit
-    else Display.invalid_input(@input)
+    else display.invalid_input(@input)
     end
   end
 
   def instructions
-    display = Display
-    Display.instructions
+    display.instructions
     @input = get_input
     start_menu_options
   end
 
   def quit
-    Display.quit
+    display.quit
     exit
   end
 
@@ -43,19 +48,19 @@ class CLI
   end
 
   def play
-    Display.start
-    @game = Game.new.start
+    display.start
+    @game = Game.new(display).start
   end
 
   def play_again?
-    puts "Play Again? (Y)es or (N)o"
+    display.play_again
     @input = get_input
-    input == 'y' || input == 'yes' ? true : false
+    input == 'y' || input == 'yes'
   end
 
   def get_input
     @input = ''
-    Display.enter
+    display.enter
     @input = gets.chomp.downcase
   end
 end
