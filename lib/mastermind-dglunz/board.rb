@@ -3,33 +3,45 @@ require 'terminal-table'
 class Board
   attr_accessor :table
   def initialize(size=4)
-    @rows   = []
-    @title  = "Mastermind"
-    @header = ['Turn', "Guess", "E", "P"]
-    @rows   << ['Final', "????", " ", " "]
+    @rows        = []
+    @mystery_row = ['Final', "????", " ", " "]
+    @title       = "Mastermind"
+    @header      = ['Turn', "Guess", "E", "P"]
+    @rows        << @mystery_row
     fill_empty_rows
     create_new_table
   end
 
   def edit_row(round, history)
-    @rows = []
-    @rows << ['Final', "????", " ", " "]
+    clear_rows
+    @rows << @mystery_row
     fill_existing_table(history)
     create_new_table
   end
 
   def finished(round, history, final)
-    @rows = []
+    clear_rows
     @title = "Game Over"
     @rows << ['Final', final , " ", " "]
     fill_existing_table(history)
     create_new_table
   end
 
+  def show
+    puts table
+  end
+
+  private
+
   def fill_existing_table(history)
-    10.downto(history.length+1) { |x| @rows << [x, "    ", " ", " "] }
+    fill_empty_rows(history.length + 1)
     history.reverse.each_with_index do |round, index|
-      @rows << [history.length - index, round[:guess], round[:elements], round[:positions]]
+      @rows << [
+        history.length - index, 
+        round[:guess],
+        round[:elements],
+        round[:positions]
+        ]
     end
   end
 
@@ -44,7 +56,8 @@ class Board
     @table = table
   end
 
-  def show
-    puts table
+  def clear_rows
+    @rows = []
   end
+
 end
